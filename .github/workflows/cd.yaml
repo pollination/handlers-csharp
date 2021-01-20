@@ -1,0 +1,51 @@
+name: CD
+
+on: 
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: "Checkout Master Branch"
+        uses: actions/checkout@v2
+
+      - name: Semantic Release - dry run for getting version
+        uses: cycjimmy/semantic-release-action@v2
+        id: semantic
+        with:
+          dry_run: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Update Assembly Version
+        run: |
+          python .github/workflows/update_version.py ${{ steps.semantic.outputs.new_release_version }}
+      
+      - name: Create key pair for signing the assembly
+        working-directory: src/Pollination.Handlers
+        run: |
+          "C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\sn.exe" -k ladybugTools.snk
+          ls
+        shell: cmd
+
+      - name: Build
+        working-directory: src/Pollination.Handlers
+        run: |
+          dotnet restore
+          dotnet build --configuration Release 
+
+
+      - name: Deploy
+        working-directory: src/Pollination.Handlers
+        run: |
+          dotnet pack --configuration Release
+          dotnet nuget push bin\Release\*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
+
+      - run: npx semantic-release
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+

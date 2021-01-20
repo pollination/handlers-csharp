@@ -2,6 +2,14 @@
 
   <PropertyGroup>
 	  <TargetFrameworks>netstandard2.0;NET452</TargetFrameworks>
+	  <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+	  <Authors>Ladybug Tools</Authors>
+	  <Version>0.0.1</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
 
   <ItemGroup>
