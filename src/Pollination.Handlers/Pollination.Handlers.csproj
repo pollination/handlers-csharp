@@ -13,14 +13,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HoneybeeSchema" Version="1.39.0.2" />
+    <PackageReference Include="HoneybeeSchema" Version="1.42.2.1" />
   </ItemGroup>
 
 
   <ItemGroup>
-    <Reference Include="HoneybeeRhino">
-      <HintPath>..\..\lib\HoneybeeRhino.dll</HintPath>
-      <Private>false</Private>
+    <Reference Include="Share">
+      <HintPath>..\..\lib\Share.dll</HintPath>
+	<Private>false</Private>
     </Reference>
   </ItemGroup>
 
