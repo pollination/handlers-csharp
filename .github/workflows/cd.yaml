@@ -44,7 +44,7 @@ jobs:
           dotnet pack --configuration Release
           dotnet nuget push bin\Release\*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
 
-      - run: npx semantic-release
+      - run: npx semantic-release@^17.0.0
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
