@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFrameworks>NET48</TargetFrameworks>
+	  <Authors>Ladybug Tools</Authors>
+	  <Version>0.0.2</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<PackageReference Include="HoneybeeSchema" Version="1.47.2.1" IncludeAssets="compile;build" />
+	<PackageReference Include="Pollination.UI.Rhino" Version="1.6.7" IncludeAssets="compile;build" />
+	<PackageReference Include="PollinationSDK" Version="0.14.0.14" IncludeAssets="compile;build" />
+	<PackageReference Include="RhinoCommon" Version="6.23.20055.13111" IncludeAssets="compile;build" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Reference Include="Pollination.Core">
+      <HintPath>..\..\Lib\Pollination.Core.dll</HintPath>	
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>
