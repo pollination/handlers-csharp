@@ -16,10 +16,27 @@ namespace Pollination
     public static class RhinoHandlers
     {
         /// <summary>
+        /// Translate in-model SimulationParameter to json and return the saved file path
+        /// </summary>
+        /// <returns>Json file path</returns>
+        public static string RhinoSimulationParameterToJSON(object param)
+        {
+            var model = ModelEntityTable.Instance.CurrentModelEntity;
+            var hbObj = model.GetSimulationParameter();
+
+            if (hbObj == null) throw new ArgumentNullException("Input model");
+            var temp = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName() + ".hbjson");
+           
+            File.WriteAllText(temp, hbObj.ToJson());
+
+            if (!File.Exists(temp)) throw new ArgumentException($"Failed to save the SimulationParameter to {temp}");
+            return temp;
+        }
+
+        /// <summary>
         /// Translate Honeybee Model to HBJson and return the saved file path
         /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
+        /// <returns>File path</returns>
         public static string RhinoHBModelToJSON(object param)
         {
             var model = ModelEntityTable.Instance.CurrentModelEntity;
@@ -38,9 +55,32 @@ namespace Pollination
         }
 
         /// <summary>
+        /// Translate Honeybee SimulationParameter to Json and return the saved file path
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public static string HBSimulationParameterToJSON(object param)
+        {
+            if (param == null) throw new ArgumentNullException("Input model: null is not valid");
+
+            if (param is string s)
+                return s;
+
+            var sP = param as HoneybeeSchema.SimulationParameter;
+            if (sP == null) throw new ArgumentNullException("Input is not a SimulationParameter object");
+
+
+            var temp = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName() + ".json");
+            File.WriteAllText(temp, sP.ToJson());
+
+            if (!File.Exists(temp)) throw new ArgumentException($"Failed to save the SimulationParameter to {temp}");
+            return temp;
+        }
+
+        /// <summary>
         /// Translate Honeybee Model to HBJson and return the saved file path
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="param"></param>
         /// <returns></returns>
         public static string HBModelToJSON(object param)
         {
