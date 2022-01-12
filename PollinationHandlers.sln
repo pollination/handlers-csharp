@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pollination.Handlers", "src\Pollination.Handlers\Pollination.Handlers.csproj", "{265B287F-80CE-4EA0-A7C0-10335084C9C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Pollination.RhinoHandlers", "src\Pollination.RhinoHandlers\Pollination.RhinoHandlers.csproj", "{265B287F-80CE-4EA0-A7C0-10335084C9C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
