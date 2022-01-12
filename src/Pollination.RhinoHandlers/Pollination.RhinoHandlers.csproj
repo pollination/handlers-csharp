@@ -19,10 +19,11 @@
 
 
   <ItemGroup>
-    <Reference Include="Pollination.Core">
+    <Reference Include="Pollination.Core" Condition="'$(Configuration)'=='Release'">
       <HintPath>..\..\Lib\Pollination.Core.dll</HintPath>	
       <Private>false</Private>
     </Reference>
+    <ProjectReference Include="..\..\..\Pollination.Core\Pollination.Core.csproj" Condition="'$(Configuration)'=='Debug'" />
   </ItemGroup>
 
 </Project>
