@@ -25,21 +25,21 @@ jobs:
           python .github/workflows/update_version.py ${{ steps.semantic.outputs.new_release_version }}
       
       - name: Create key pair for signing the assembly
-        working-directory: src/Pollination.Handlers
+        working-directory: src/Pollination.RhinoHandlers
         run: |
           "C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\sn.exe" -k ladybugTools.snk
           ls
         shell: cmd
 
       - name: Build
-        working-directory: src/Pollination.Handlers
+        working-directory: src/Pollination.RhinoHandlers
         run: |
           dotnet restore
           dotnet build --configuration Release 
 
 
       - name: Deploy
-        working-directory: src/Pollination.Handlers
+        working-directory: src/Pollination.RhinoHandlers
         run: |
           dotnet pack --configuration Release
           dotnet nuget push bin\Release\*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
