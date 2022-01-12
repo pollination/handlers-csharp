@@ -20,5 +20,5 @@ def replaceVersion(file, new_text):
         f.write(s)
 
 
-config = os.path.join(working_dir, 'src', 'Pollination.Handlers', 'Pollination.Handlers.csproj')
+config = os.path.join(working_dir, 'src', 'Pollination.RhinoHandlers', 'Pollination.RhinoHandlers.csproj')
 replaceVersion(config, str(new_version))
