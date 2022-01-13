@@ -13,7 +13,7 @@
 	<ItemGroup>
 		<PackageReference Include="HoneybeeSchema" Version="1.47.2.1" IncludeAssets="compile;build" />
 		<PackageReference Include="RhinoCommon" Version="6.23.20055.13111" IncludeAssets="compile;build" />
-		<PackageReference Include="PollinationSDK" Version="0.23.0" />
+		<PackageReference Include="PollinationSDK" Version="0.23.0" IncludeAssets="compile;build" Condition="'$(Configuration)'=='Release'" />
 	</ItemGroup>
 
 
@@ -23,6 +23,7 @@
 			<Private>false</Private>
 		</Reference>
 		<ProjectReference Include="..\..\..\Pollination.Core\Pollination.Core.csproj" Condition="'$(Configuration)'=='Debug'" />
+		<ProjectReference Include="..\..\..\pollinationSDK\src\PollinationSDK\PollinationSDK.csproj" Condition="'$(Configuration)'=='Debug'" />
 	</ItemGroup>
 
 </Project>
