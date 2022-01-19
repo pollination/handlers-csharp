@@ -4,6 +4,7 @@
 		<TargetFrameworks>NET48</TargetFrameworks>
 		<Authors>Ladybug Tools</Authors>
 		<Version>0.0.2</Version>
+		<Configurations>Debug;Release;Debug_packages</Configurations>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)'=='Release'">
@@ -13,17 +14,17 @@
 	<ItemGroup>
 		<PackageReference Include="HoneybeeSchema" Version="1.47.2.1" IncludeAssets="compile;build" />
 		<PackageReference Include="RhinoCommon" Version="6.23.20055.13111" IncludeAssets="compile;build" />
-		<PackageReference Include="PollinationSDK" Version="0.23.0.1" IncludeAssets="compile;build" Condition="'$(Configuration)'=='Release'" />
+		<PackageReference Include="PollinationSDK" Version="0.23.0.1" IncludeAssets="compile;build" Condition="'$(Configuration)'!='Debug_packages'" />
 	</ItemGroup>
 
 
 	<ItemGroup>
-		<Reference Include="Pollination.Core" Condition="'$(Configuration)'=='Release'">
+		<Reference Include="Pollination.Core" Condition="'$(Configuration)'!='Debug_packages'">
 			<HintPath>..\..\Lib\Pollination.Core.dll</HintPath>
 			<Private>false</Private>
 		</Reference>
-		<ProjectReference Include="..\..\..\Pollination.Core\Pollination.Core.csproj" Condition="'$(Configuration)'=='Debug'" />
-		<ProjectReference Include="..\..\..\pollinationSDK\src\PollinationSDK\PollinationSDK.csproj" Condition="'$(Configuration)'=='Debug'" />
+		<ProjectReference Include="..\..\..\Pollination.Core\Pollination.Core.csproj" Condition="'$(Configuration)'=='Debug_packages'" />
+		<ProjectReference Include="..\..\..\pollinationSDK\src\PollinationSDK\PollinationSDK.csproj" Condition="'$(Configuration)'=='Debug_packages'" />
 	</ItemGroup>
 
 </Project>
