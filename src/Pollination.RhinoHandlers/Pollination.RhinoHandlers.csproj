@@ -5,6 +5,7 @@
 		<Authors>Ladybug Tools</Authors>
 		<Version>0.0.2</Version>
 		<Configurations>Debug;Release;Debug_packages</Configurations>
+		<Platforms>x64</Platforms>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)'=='Release'">
