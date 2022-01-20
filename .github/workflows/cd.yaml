@@ -12,13 +12,17 @@ jobs:
       - name: "Checkout Master Branch"
         uses: actions/checkout@v2
 
-      - name: Semantic Release - dry run for getting version
+      - name: test Build
+        working-directory: src/Pollination.RhinoHandlers
+        run: |
+          dotnet restore
+          dotnet build --configuration Release 
+
+      - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v2
         id: semantic
-        with:
-          dry_run: true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Update Assembly Version
         run: |
