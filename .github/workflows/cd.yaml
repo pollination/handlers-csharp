@@ -15,16 +15,13 @@ jobs:
       - name: test Build
         working-directory: src/Pollination.RhinoHandlers
         run: |
-          dotnet restore
           dotnet build --configuration Release 
 
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v2
         id: semantic
-        with:
-          semantic_version: 17.0.0
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update Assembly Version
         run: |
@@ -37,21 +34,9 @@ jobs:
           ls
         shell: cmd
 
-      - name: Build
-        working-directory: src/Pollination.RhinoHandlers
-        run: |
-          dotnet restore
-          dotnet build --configuration Release 
-
 
       - name: Deploy
         working-directory: src/Pollination.RhinoHandlers
         run: |
           dotnet pack --configuration Release
           dotnet nuget push bin\Release\*.nupkg -k ${{secrets.NUGET_API_KEY}} -s https://api.nuget.org/v3/index.json
-
-      - run: npx semantic-release@^17.0.0
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
