@@ -1,13 +1,10 @@
-﻿using Core.Entity;
+﻿using Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using PollinationSDK;
 using PollinationSDK.Wrapper;
-using System.Threading.Tasks;
 using System.Linq;
-using Core;
-using System.Reflection;
 
 // project name has to be the format of NameSpace.Handlers. 
 // For example: if the name space is "HoneybeeSchema", then project name should be HoneybeeSchema.Handlers.
@@ -21,7 +18,7 @@ namespace Pollination
         /// <returns>Json file path</returns>
         public static string RhinoSimulationParameterToJSON(object param)
         {
-            var model = ModelEntityTable.Instance.CurrentModelEntity;
+            var model = Core.ModelEntity.CurrentModel;
             var hbObj = model.GetSimulationParameter();
 
             if (hbObj == null) throw new ArgumentNullException("Input model");
@@ -39,7 +36,7 @@ namespace Pollination
         /// <returns>File path</returns>
         public static string RhinoHBModelToJSON(object param)
         {
-            var model = ModelEntityTable.Instance.CurrentModelEntity;
+            var model = Core.ModelEntity.CurrentModel;
             var hbObj = model.GetHBModel();
 
             if (hbObj == null) throw new ArgumentNullException("Input model");
