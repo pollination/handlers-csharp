@@ -18,7 +18,7 @@
 	</ItemGroup>
 
 	<ItemGroup Condition="'$(Configuration)'!='Debug_packages'">
-		<PackageReference Include="Pollination.Core" Version="1.1.1" />
+		<PackageReference Include="Pollination.Core" Version="1.1.2" />
 		<PackageReference Include="PollinationSDK" Version="0.23.0.1" IncludeAssets="compile;build" />
 	</ItemGroup>
 
