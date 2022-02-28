@@ -137,7 +137,7 @@ namespace Pollination
             runID = runID.Substring(0, 5);
             var min = resultNumbers.Min();
             var max = resultNumbers.Max();
-            var legend = new Core.Render.LegendParameter(min, max, 10);
+            var legend = new Honeybee.UI.LegendParameter(min, max, 10);
             var re = new Core.Objects.AnalyticalMeshObject(mergedMesh, resultNumbers, legend);
             re.AddToRhino(doc, layerName: $"RESULT-{runID}");
             doc.Views.Redraw();
