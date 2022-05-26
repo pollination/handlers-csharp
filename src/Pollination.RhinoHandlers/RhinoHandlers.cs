@@ -104,7 +104,7 @@ namespace Pollination
 
         public static async void LoadMeshBasedResultsToRhino(params object[] results)
         {
-            var modelAsset = results.OfType<RunInputAsset>().FirstOrDefault();
+            var modelAsset = results.OfType<RunInputAsset>().FirstOrDefault(_ => _.PreloadedPath is HoneybeeSchema.Model);
             var resultAsset = results.OfType<RunOutputAsset>().FirstOrDefault(); // two rooms result
 
 
@@ -122,7 +122,8 @@ namespace Pollination
             foreach (var grid in grid_res)
             {
                 var values = grid.values as IList<object>;
-                var numbers = values.OfType<double>().ToList();
+                // try to convert int or double, etc
+                var numbers = values.Select(_ => System.Convert.ToDouble(_)).ToList();
                 var mesh = grid.grid.Mesh.ToRHMesh();
 
                 mergedMesh.Append(mesh);
@@ -139,7 +140,7 @@ namespace Pollination
             var max = resultNumbers.Max();
             var legend = new Honeybee.UI.LegendParameter(min, max, 10);
             var re = new Core.Objects.AnalyticalMeshObject(mergedMesh, resultNumbers, legend);
-            re.AddToRhino(doc, layerName: $"RESULT-{runID}");
+            re.AddToRhino(doc, layerName: $"RESULT-{runID}", resultAsset.Name);
             doc.Views.Redraw();
         }
 
