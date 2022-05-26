@@ -124,7 +124,8 @@ namespace Pollination
                 }
                 else
                 {
-                    reportMessage($"{inputToOpen.Name}: {inputToOpen.Value}");
+                    var v = string.Join(",", inputToOpen.Value.Select(_ => _.ToString()));
+                    reportMessage($"{inputToOpen.Name}: {v}");
                 }
               
             }
