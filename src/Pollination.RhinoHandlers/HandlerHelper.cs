@@ -11,14 +11,20 @@ namespace Pollination
     public static class HandlerHelper
     {
 
-        public static async Task LoadResult(this Core.Runner.JobResultPackage resultPackage, RunInfo runInfo, RunOutputAsset outputAsset, Action<string> reportMessage = default)
+        public static async Task LoadResult(
+            this Core.Runner.JobResultPackage resultPackage, 
+            RunInfo runInfo,
+            RunInputAsset inputAsset,
+            RunOutputAsset outputAsset, 
+            string runID = default,
+            Action<string> reportMessage = default)
         {
             reportMessage("Loading.");
 
             // get job
             var res = resultPackage;
 
-            if (resultPackage.IsCloudJob)
+            if (res.IsCloudJob)
             {
                 var projApi = new PollinationSDK.Api.ProjectsApi();
                 var proj = await projApi.GetProjectAsync(res.CloudProjectOwner, res.CloudProjectName);
@@ -29,12 +35,12 @@ namespace Pollination
                     throw new ArgumentException($"This job status is [{job.CloudJob.Status.Status}], please check back later!");
 
                 // get run assets
-                runInfo = runInfo ?? job.GetRunInfo(0);
+                runInfo = runInfo ?? new RunInfo(proj, runID);
                 reportMessage("Loading...");
             }
             else
             {
-                var jobFolder = resultPackage.SavedLocalPath;
+                var jobFolder = res.SavedLocalPath;
                 if (!System.IO.Directory.Exists(jobFolder))
                     throw new ArgumentException($"Failed to find the simulation folder: {jobFolder}");
 
@@ -42,22 +48,28 @@ namespace Pollination
                 runInfo = runInfo ?? RunInfo.LoadFromLocalFolder(jobFolder);
             }
             
-            var assets = new List<RunAssetBase>() { outputAsset };
+            var assets = new List<RunAssetBase>() { inputAsset, outputAsset };
 
             // check if this output is model-based
-            var handlers = outputAsset.Handlers;
-            if (handlers != null && outputAsset.IsLinkedAsset)
+            var outputHandlers = outputAsset?.Handlers;
+            if (outputAsset != null)
             {
-                // add model input to asset list
-                var inputAsset = runInfo.GetInputAssets().First(_ => _.Name == "model");
-                assets.Add(inputAsset);
+                if (outputHandlers != null && outputAsset.IsLinkedAsset)
+                {
+                    // add model input to asset list
+                    var modelAsset = runInfo.GetInputAssets().First(_ => _.Name == "model");
+                    assets.Add(modelAsset);
+                }
             }
+            
+
+            assets = assets.Where(_ => _ != null).Distinct().ToList();
 
             var results = new List<RunAssetBase>();
-            if (resultPackage.IsCloudJob)
+            if (res.IsCloudJob)
             {
                 // check if needs to download
-                var folder = resultPackage.SavedLocalPath;
+                var folder = res.SavedLocalPath;
 
                 // downloaded 
                 results = await runInfo.DownloadRunAssetsAsync(assets, folder, reportMessage, useCached: true);
@@ -75,29 +87,48 @@ namespace Pollination
 
 
             // Load to Rhino 
-            var outputToLoad = preloadedResults.OfType<RunOutputAsset>().First();
-          
-            if (handlers != null && handlers.Any())
+            var outputToLoad = preloadedResults.OfType<RunOutputAsset>().FirstOrDefault();
+            if (outputToLoad != null)
             {
-                var outputAssetHandler = handlers.LastOrDefault();
-                reportMessage("Loading results");
+                if (outputHandlers != null && outputHandlers.Any())
+                {
+                    var outputAssetHandler = outputHandlers.LastOrDefault();
+                    reportMessage("Loading results");
 
-                var name = outputAssetHandler.Function;
-                var actionMethod = typeof(RhinoHandlers).GetMethod(name, BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
+                    var name = outputAssetHandler.Function;
+                    var actionMethod = typeof(RhinoHandlers).GetMethod(name, BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
 
-                var paramArg = preloadedResults.ToArray<object>();
-                if (handlers.Count == 1) // only 
-                    paramArg = new object[] { preloadedResults.OfType<RunOutputAsset>().FirstOrDefault() };
-                actionMethod?.Invoke(null, new object[] { paramArg });
-                //RhinoHandlers.LoadMeshBasedResultsToRhino(paramArg);
-                reportMessage("Loaded");
+                    var paramArg = preloadedResults.ToArray<object>();
+                    if (outputHandlers.Count == 1) // only 
+                        paramArg = new object[] { preloadedResults.OfType<RunOutputAsset>().FirstOrDefault() };
+                    actionMethod?.Invoke(null, new object[] { paramArg });
+                    //RhinoHandlers.LoadMeshBasedResultsToRhino(paramArg);
+                    reportMessage("Loaded");
+                }
+                else
+                {
+                    // open downloaded folder
+                    Core.Utility.OpenFileOrFolderPath(outputToLoad.LocalPath);
+                    reportMessage($"Opened: {outputToLoad.LocalPath}");
+                }
             }
-            else
+
+            if (inputAsset != null)
             {
-                // open downloaded folder
-                Core.Utility.OpenFileOrFolderPath(outputToLoad.LocalPath);
-                reportMessage($"Opened: {outputToLoad.LocalPath}");
+                var inputToOpen = preloadedResults.OfType<RunInputAsset>().FirstOrDefault(_=>_.Name == inputAsset.Name);
+                if (inputToOpen.IsPathAsset())
+                {
+                    // open downloaded folder
+                    Core.Utility.OpenFileOrFolderPath(inputToOpen.LocalPath);
+                    reportMessage($"Opened: {inputToOpen.LocalPath}");
+                }
+                else
+                {
+                    reportMessage($"{inputToOpen.Name}: {inputToOpen.Value}");
+                }
+              
             }
+           
            
         }
 
@@ -147,11 +178,15 @@ namespace Pollination
                     // inputs
 
                     // Load input model
-                    if (item.LocalPath.ToLower().EndsWith(".hbjson"))
+                    if ((item.LocalPath?.ToLower()?.EndsWith(".hbjson")).GetValueOrDefault())
                     {
                         var json = System.IO.File.ReadAllText(item.LocalPath);
                         dup.PreloadedPath = HoneybeeSchema.Model.FromJson(json);
                     }
+                    //else if(item is RunInputAsset inputAsset)
+                    //{
+                    //    inputAsset.IsPathAsset()
+                    //}
                 
                 }
 
