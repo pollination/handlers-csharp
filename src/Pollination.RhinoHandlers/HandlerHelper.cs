@@ -12,7 +12,7 @@ namespace Pollination
     {
 
         public static async Task LoadResult(
-            this Core.Runner.JobResultPackage resultPackage, 
+            this JobResultPackage resultPackage, 
             RunInfo runInfo,
             RunInputAsset inputAsset,
             RunOutputAsset outputAsset, 
