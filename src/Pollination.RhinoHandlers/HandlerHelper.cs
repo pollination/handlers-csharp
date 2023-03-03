@@ -28,7 +28,7 @@ namespace Pollination
             {
                 var projApi = new PollinationSDK.Api.ProjectsApi();
                 var proj = await projApi.GetProjectAsync(res.ProjectOwner, res.ProjectName);
-                var job = new ScheduledJobInfo(proj, res.JobID);
+                var job = ScheduledJobInfo.From(proj, res.JobID);
                 reportMessage("Loading..");
 
                 if (!IsJobFinished(job))
