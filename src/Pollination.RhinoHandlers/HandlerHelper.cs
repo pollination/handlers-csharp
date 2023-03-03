@@ -27,7 +27,7 @@ namespace Pollination
             if (res.IsCloudJob)
             {
                 var projApi = new PollinationSDK.Api.ProjectsApi();
-                var proj = await projApi.GetProjectAsync(res.CloudProjectOwner, res.CloudProjectName);
+                var proj = await projApi.GetProjectAsync(res.ProjectOwner, res.ProjectName);
                 var job = new ScheduledJobInfo(proj, res.JobID);
                 reportMessage("Loading..");
 
@@ -45,7 +45,7 @@ namespace Pollination
                     throw new ArgumentException($"Failed to find the simulation folder: {jobFolder}");
 
                 //Local run
-                runInfo = runInfo ?? RunInfo.LoadFromLocalFolder(jobFolder);
+                runInfo = runInfo ?? new RunInfo(jobFolder);
             }
             
             var assets = new List<RunAssetBase>() { inputAsset, outputAsset };
@@ -202,7 +202,7 @@ namespace Pollination
         private static bool IsJobFinished(ScheduledJobInfo jobInfo)
         {
             var api = new PollinationSDK.Api.JobsApi();
-            var proj = jobInfo.Project;
+            var proj = jobInfo.CloudProject;
             var job = api.GetJob(proj.Owner.Name, proj.Name, jobInfo.JobID);
 
             return job.Status.FinishedAt > job.Status.StartedAt;
