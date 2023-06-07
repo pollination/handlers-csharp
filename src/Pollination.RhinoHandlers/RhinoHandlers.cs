@@ -22,7 +22,7 @@ namespace Pollination
             var hbObj = model.GetSimulationParameter();
 
             if (hbObj == null) throw new ArgumentNullException("Input model");
-            var temp = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName() + ".hbjson");
+            var temp = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName() + ".json");
            
             File.WriteAllText(temp, hbObj.ToJson());
 
