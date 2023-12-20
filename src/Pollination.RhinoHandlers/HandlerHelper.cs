@@ -159,7 +159,7 @@ namespace Pollination
             foreach (var item in rawResults)
             {
 
-                var dup = item.Duplicate();
+                var dup = item.Duplicate() as RunAssetBase;
                 if (dup is RunOutputAsset outputAsset)
                 {
                     var handlers = outputAsset.Handlers;
