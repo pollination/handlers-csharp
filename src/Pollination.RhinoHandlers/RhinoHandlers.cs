@@ -36,18 +36,8 @@ namespace Pollination
         /// <returns>File path</returns>
         public static string RhinoHBModelToJSON(object param)
         {
-            var model = Core.ModelEntity.CurrentModel;
-            var hbObj = model.GetHBModel();
-
-            if (hbObj == null) throw new ArgumentNullException("Input model");
             var temp = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName() + ".hbjson");
-            using (var outputFile = new StreamWriter(temp))
-            {
-                var json = hbObj.ToJson();
-                outputFile.Write(json);
-            }
-
-            if (!File.Exists(temp)) throw new ArgumentException($"Failed to save the model to {temp}");
+            temp = Core.Exporters.SaveModelToHBJson(temp, out _, false);
             return temp;
         }
 
