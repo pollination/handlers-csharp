@@ -128,7 +128,7 @@ namespace Pollination
             runID = runID.Substring(0, 5);
             var min = resultNumbers.Min();
             var max = resultNumbers.Max();
-            var legend = new LadybugDisplaySchema.LegendParameters(min, max, 10);
+            var legend = new LadybugDisplaySchema.LegendParameters(min, max, 11);
             var vizData = new LadybugDisplaySchema.VisualizationData(resultNumbers, legend);
             var re = new Core.Objects.AnalysisMeshObject(mergedMesh, vizData);
             re.AddToRhino(doc, layerName: $"RESULT-{runID}", resultAsset.Name);
