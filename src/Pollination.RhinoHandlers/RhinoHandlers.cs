@@ -42,6 +42,36 @@ namespace Pollination
         }
 
         /// <summary>
+        /// Get JSON string of Project Information
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public static string RhinoModelProjectInfo(object param)
+        {
+            return Core.ModelEntity.CurrentModel.ProjectInfo?.ToJson();
+        }
+
+        /// <summary>
+        /// Get north from Project Information
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns>double</returns>
+        public static double RhinoModelProjectInfoNorth(object param)
+        {
+            return Core.ModelEntity.CurrentModel.ProjectInfo.North;
+        }
+
+        /// <summary>
+        /// Get weather url/path from Project Information
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns>string path</returns>
+        public static string RhinoModelProjectInfoWeather(object param)
+        {
+            return Core.ModelEntity.CurrentModel.ProjectInfo.WeatherUrls?.FirstOrDefault();
+        }
+
+        /// <summary>
         /// Translate Honeybee SimulationParameter to Json and return the saved file path
         /// </summary>
         /// <param name="param"></param>
