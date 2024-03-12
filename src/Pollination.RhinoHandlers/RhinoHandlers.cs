@@ -62,11 +62,24 @@ namespace Pollination
         }
 
         /// <summary>
+        /// Get the first weather url from Project Information
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentException"></exception>
+        public static string RhinoModelProjectInfoWeatherUrl(object param)
+        {
+            var projInfo = Core.ModelEntity.CurrentModel.ProjectInfo;
+            var url = projInfo.WeatherUrls?.FirstOrDefault();
+            return url;
+        }
+
+        /// <summary>
         /// Get a local file path from the first of weather urls from Project Information
         /// </summary>
         /// <param name="param"></param>
         /// <returns>string path</returns>
-        public static string RhinoModelProjectInfoWeather(object param)
+        public static string RhinoModelProjectInfoEPW(object param)
         {
             var projInfo = Core.ModelEntity.CurrentModel.ProjectInfo;
             var url = projInfo.WeatherUrls?.FirstOrDefault();
@@ -74,6 +87,24 @@ namespace Pollination
                 throw new System.ArgumentException("Found invalid weather urls, please check ProjectInfomation!");
             Core.Utility.UpdateLocationFromEpw(projInfo, out var epwFile);
             return epwFile;
+        }
+
+        /// <summary>
+        /// Get a local file path from the first of weather urls from Project Information
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns>string path</returns>
+        public static string RhinoModelProjectInfoDDY(object param)
+        {
+            var projInfo = Core.ModelEntity.CurrentModel.ProjectInfo;
+            var url = projInfo.WeatherUrls?.FirstOrDefault();
+            if (string.IsNullOrEmpty(url))
+                throw new System.ArgumentException("Found invalid weather urls, please check ProjectInfomation!");
+            Core.Utility.UpdateLocationFromEpw(projInfo, out var epwFile);
+            var ddy = Path.ChangeExtension(epwFile, ".ddy");
+            if (!File.Exists(epwFile))
+                throw new System.ArgumentException($"Failed to get a valid DDY file from {url}, please check ProjectInfomation!");
+            return ddy;
         }
 
         /// <summary>
