@@ -62,13 +62,18 @@ namespace Pollination
         }
 
         /// <summary>
-        /// Get weather url/path from Project Information
+        /// Get a local file path from the first of weather urls from Project Information
         /// </summary>
         /// <param name="param"></param>
         /// <returns>string path</returns>
         public static string RhinoModelProjectInfoWeather(object param)
         {
-            return Core.ModelEntity.CurrentModel.ProjectInfo.WeatherUrls?.FirstOrDefault();
+            var projInfo = Core.ModelEntity.CurrentModel.ProjectInfo;
+            var url = projInfo.WeatherUrls?.FirstOrDefault();
+            if (string.IsNullOrEmpty(url))
+                throw new System.ArgumentException("Found invalid weather urls, please check ProjectInfomation!");
+            Core.Utility.UpdateLocationFromEpw(projInfo, out var epwFile);
+            return epwFile;
         }
 
         /// <summary>
