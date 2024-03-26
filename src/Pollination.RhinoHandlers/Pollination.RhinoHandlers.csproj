@@ -5,7 +5,6 @@
 		<TargetFrameworks>NET48</TargetFrameworks>
 		<Authors>Ladybug Tools</Authors>
 		<Version>0.0.2</Version>
-		<Configurations>Debug_RH6;Debug_RH7;Debug_RH7;Debug_RH8;Release_RH6;Release_RH7;Release_RH8</Configurations>
 		<Platforms>x64</Platforms>
 	</PropertyGroup>
 
