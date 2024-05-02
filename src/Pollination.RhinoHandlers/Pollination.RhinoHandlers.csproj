@@ -14,8 +14,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="HoneybeeSchema" Version="*" IncludeAssets="compile;build" />
-		<ProjectReference Include="..\..\..\rhino-plugin-core\src\Pollination.Core\Pollination.Core.csproj" IncludeAssets="compile;build" />
-		<ProjectReference Include="..\..\..\pollinationSDK\src\PollinationSDK\PollinationSDK.csproj" IncludeAssets="compile;build" />
+		<PackageReference Include="HoneybeeSchema" Version="*"/>
+		<ProjectReference Include="..\..\..\rhino-plugin-core\src\Pollination.Core\Pollination.Core.csproj"/>
+		<ProjectReference Include="..\..\..\pollinationSDK\src\PollinationSDK\PollinationSDK.csproj"/>
 	</ItemGroup>
 </Project>
