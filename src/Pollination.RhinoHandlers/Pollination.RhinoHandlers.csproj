@@ -2,7 +2,8 @@
 
 	<Import Project="../../../CommonReferenceRhino.csproj" />
 	<PropertyGroup>
-		<TargetFrameworks>NET48</TargetFrameworks>
+		<TargetFrameworks Condition="$(Configuration.EndsWith('RH8')) != 'true'">net48</TargetFrameworks>
+		<TargetFrameworks Condition="$(Configuration.EndsWith('RH8'))">net7;net48</TargetFrameworks>
 		<Authors>Ladybug Tools</Authors>
 		<Version>0.0.2</Version>
 		<Platforms>x64</Platforms>
