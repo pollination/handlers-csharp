@@ -10,12 +10,13 @@
 	</PropertyGroup>
 
 	<PropertyGroup Condition="$(Configuration.StartsWith(`Release`))">
-		<DebugType>None</DebugType>
-		<DebugSymbols>False</DebugSymbols>
+		<Optimization>true</Optimization>
+		<DebugSymbols>false</DebugSymbols>
+		<DebugType>none</DebugType>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="HoneybeeSchema" Version="*-*"/>
+		<PackageReference Include="HoneybeeSchema" Version="*"/>
 		<ProjectReference Include="..\..\..\rhino-plugin-core\src\Pollination.Core\Pollination.Core.csproj"/>
 		<ProjectReference Include="..\..\..\pollinationSDK\src\PollinationSDK\PollinationSDK.csproj"/>
 	</ItemGroup>
